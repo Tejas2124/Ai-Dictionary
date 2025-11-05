@@ -19,7 +19,7 @@ export default function Home() {
               <div className="flex flex-col md:grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center md:items-center">
                 <div className="space-y-6 w-full">
                   <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-                    AI Dictonary
+                    AI Dictionary
                   </h1>
                   <p className="text-lg text-white opacity-90 leading-relaxed max-w-lg mb-8">
                     Your ultimate resource for everything AI. Explore
