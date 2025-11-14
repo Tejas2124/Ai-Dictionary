@@ -140,7 +140,7 @@ export default function Home() {
                 </h3>
 
                 <p className="text-sm md:text-base text-gray-200 leading-relaxed opacity-80 mb-4">
-                  Google has been investing in AI for many years...
+                  Google has been investing in AI for many years, driving innovation across industries and redefining the boundaries of technology. In the gaming world, the integration of VR and AI is transforming how players interact with virtual environments, offering unprecedented levels of visual fidelity and immersive storytelling. Adaptive gameplay powered by AI personalizes experiences, while VR brings these worlds to life, making games more attractive and engaging than ever before. As developers continue to push the limits, the synergy between AI and VR promises a future where games are not only visually stunning but also deeply responsive to each player's unique style.
                 </p>
 
                 <Button
