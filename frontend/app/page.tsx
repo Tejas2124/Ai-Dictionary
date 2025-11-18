@@ -2,6 +2,7 @@
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import  Image  from "next/image";
 
 export default function Home() {
   return (
@@ -84,11 +85,12 @@ export default function Home() {
                     animate={{ y: [0, -10, 0] }}
                     transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    <img
-                      src="/undraw_ai-agent_pdkp.svg"
-                      alt="AI Agent illustration"
-                      className="w-full h-full object-cover"
-                    />
+                    <Image 
+                    src="/undraw_ai-agent_pdkp.svg"
+                    width={500}
+                    height={500}
+                    alt = "AI Agent illustration"
+                    /> 
                   </motion.div>
                 </motion.div>
               </div>
