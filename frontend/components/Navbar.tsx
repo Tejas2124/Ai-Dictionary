@@ -1,6 +1,6 @@
 "use client";
-
-import { motion, useScroll, useTransform } from "framer-motion";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -8,84 +8,98 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-
-import { ContactButton } from "./Contact-Button";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export default function Navbar() {
-  const { scrollY } = useScroll();
-
-  // Navbar shrinking
-  const navHeight = useTransform(scrollY, [0, 120], ["4.5rem", "4.2rem"]);
-  const navRadius = useTransform(scrollY, [0, 120], ["0px", "25px"]);
-  const navWidth = useTransform(scrollY, [0, 120], ["100%", "75%"]);
-  const navY = useTransform(scrollY, [0, 120], ["0px", "30px"]);
-  const navShadow = useTransform(
-    scrollY,
-    [0, 120],
-    ["0px 0px 0px rgba(0,0,0,0)", "0px 6px 20px rgba(0,0,0,0.25)"]
-  );
-
-  const blur = useTransform(scrollY, [0, 120], ["blur(1px)", "blur(20px)"]);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.nav
-      style={{
-        height: navHeight,
-        width: navWidth,
-        borderRadius: navRadius,
-        y: navY,
-        boxShadow: navShadow,
-        backdropFilter: blur,
-      }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className="fixed top-0 left-1/2 -translate-x-1/2 z-50 
-                 flex items-center justify-between px-6"
-    >
-      {/* LOGO */}
-      <div className="text-xl font-bold text-white">AI Dictionary</div>
+    <nav className="sticky top-0 w-full z-50 border-b border-border/40 bg-background/80 backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-700">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 max-w-[1200px]">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="font-bold text-xl tracking-tight">
+              AI Dictionary
+            </span>
+          </Link>
+        </div>
 
-      <NavigationMenu>
-        <NavigationMenuList className="flex items-center gap-4">
-          {["Blog", "About", "Search"].map((item) => (
-            <AnimatedNavItem key={item} label={item} href={`/${item.toLowerCase()}`} />
-          ))}
+        {/* Nav Bar for Desktop and larger screens - Regular Navigation Menu using ShadCn Component */}
+        <div className="hidden md:flex items-center gap-6">
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/blog">Blog</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/about">About</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  asChild
+                  className={navigationMenuTriggerStyle()}
+                >
+                  <Link href="/search">Search</Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          <ThemeToggle />
+          <Button>Contact Us</Button>
+        </div>
 
-          {/* ALWAYS READABLE BUTTON */}
-          <ContactButton className="!text-white !bg-black/70 hover:!bg-black" />
-        </NavigationMenuList>
-      </NavigationMenu>
-    </motion.nav>
-  );
-}
+        {/* Mobile Nav bar - Logic here is - It stays hidden until md breakpoint and then collapses into a menu button which can be clicked to open the nav bar */}
+        <div className="md:hidden flex items-center gap-4">
+          <ThemeToggle />
+          <button
+            className="text-foreground"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </div>
 
-function AnimatedNavItem({ label, href }: { label: string; href: string }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <motion.div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      whileHover={{ scale: 1.07 }}
-      transition={{ duration: 0.2 }}
-      className="relative"
-    >
-      <NavigationMenuItem>
-        <NavigationMenuLink
-          href={href}
-          className={`${navigationMenuTriggerStyle()} text-black hover:text-gray-200 hover:bg-white/10 transition-colors`}
-        >
-          {label}
-        </NavigationMenuLink>
-
-        {/* Underline */}
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: hovered ? "100%" : "0%" }}
-          transition={{ duration: 0.25 }}
-          className="absolute left-0 -bottom-1 h-[2px] bg-white rounded-full"
-        />
-      </NavigationMenuItem>
-    </motion.div>
+      {isOpen && (
+        <div className="md:hidden border-t border-border/40 bg-background">
+          <div className="container py-4 flex flex-col gap-4 px-4">
+            <Link
+              href="/blog"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setIsOpen(false)}
+            >
+              Blog
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </Link>
+            <Link
+              href="/search"
+              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              onClick={() => setIsOpen(false)}
+            >
+              Search
+            </Link>
+            <Button className="w-full">Contact Us</Button>
+          </div>
+        </div>
+      )}
+    </nav>
   );
 }
