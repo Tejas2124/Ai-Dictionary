@@ -69,7 +69,7 @@ def get_full_article_content(url):
 
 
 # get the previous date
-def get_previous_day(today: date | None = None) -> date:
+def get_previous_day(days:int =2,today: date | None = None) -> date:
     """
     Returns a date offset for article queries.
 
@@ -82,7 +82,7 @@ def get_previous_day(today: date | None = None) -> date:
     """
     if today is None:
         today = date.today()
-    return today - timedelta(days=2)
+    return today - timedelta(days=days)
 
 
 # using function api
