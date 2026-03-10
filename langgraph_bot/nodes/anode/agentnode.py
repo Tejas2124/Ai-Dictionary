@@ -51,3 +51,21 @@ def description_agent_node(state: State):
             ],
             "description_agent_success": False,
         }
+def coding_agent_node(state:State):
+    last_message = f"""You are an expert coding agent,and you provide sample code for the blogs for understanding of the concept
+    use your tools to find available code for the given data to you and if available then generate the code block
+     Data: {state["data"]} """
+
+    try:
+        response = agent.invoke({"messages": [HumanMessage(content=last_message)]})
+        if response:
+            if isinstance(response, dict) and "messages" in response:
+                generated_code = response["messages"][-1].content
+                return {
+                    "messages": response["messages"],
+                    "code": generated_code,
+                    "coding_agent_success": True,}
+
+    except Exception as e:
+        return {"messages":[AIMessage(content=f'The coding agent can not perform the action due to error {e}' )],
+                "coding_agent_success":False,}
