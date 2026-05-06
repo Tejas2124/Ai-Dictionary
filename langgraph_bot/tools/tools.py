@@ -39,12 +39,17 @@ def title_tool(posttitle: str, postdata: str):
     return response.content.strip()
 
 @tool
-def slug_tool(posttitle:str):
+def slug_tool(posttitle:str)->str:
     """
     name :slug_tool
     work :generate slug for for a page to show in the url path.
     """
-    response = groqmodel.invoke(SLUG_PROMPT.format(posttitle = posttitle))
+    if posttitle:
+        try:
+            response = groqmodel.invoke(SLUG_PROMPT.format(posttitle=posttitle))
+        except Exception as e:
+            print("Error occrured while generating slug due to error {e}")
+            return ""
     return response.content.strip()
     
 ## DESCRIPTION AGENT TOOLS
